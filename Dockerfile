@@ -11,7 +11,7 @@
 
 ARG NODE_VERSION=22.23.3
 ARG ALPINE_VERSION=3.24
-ARG DISTROLESS_DIGEST=sha256:13593b7570658e8477de39e2f4a1dd25db2f836d68a0ba771251572d23bb4f8e
+ARG DISTROLESS_DIGEST=sha256:5ef534d3db0ac0c43bee379af4ae49cfbfc0ef38a46c94c52d87c68f32f34d8a
 ARG APP_VERSION=1.0.0
 
 # ---------------------------------------------------------------------------
@@ -79,7 +79,7 @@ RUN --mount=type=cache,target=/root/.npm \
 # production: distroless (sem shell, sem gerenciador de pacotes, sem npm),
 # usuario nao-root (nonroot, uid 65532), apenas dist/ + deps de producao.
 # ---------------------------------------------------------------------------
-FROM gcr.io/distroless/nodejs22-debian12:nonroot@${DISTROLESS_DIGEST} AS production
+FROM gcr.io/distroless/nodejs22-debian13:nonroot@${DISTROLESS_DIGEST} AS production
 
 ARG APP_VERSION
 

@@ -1,0 +1,52 @@
+    ...Storing image for indexing
+    ✓ Image stored for indexing
+    ...Indexing
+    ✓ Indexed 102 packages
+    ✗ Detected 1 vulnerable package with 2 vulnerabilities
+
+
+## Overview
+
+                   │        Analyzed Image         
+───────────────────┼───────────────────────────────
+ Target            │  tchesco2000/flags-api:1.0.0  
+   digest          │  389b500f5bd0                 
+   platform        │ linux/amd64                   
+   vulnerabilities │    0C     0H     2M     0L    
+   size            │ 65 MB                         
+   packages        │ 102                           
+
+
+## Packages and Vulnerabilities
+
+   0C     0H     2M     0L  qs 6.15.3
+pkg:npm/qs@6.15.3
+
+    ✗ MEDIUM CVE-2026-82562 [Allocation of Resources Without Limits or Throttling]
+      https://scout.docker.com/v/CVE-2026-82562?s=github&n=qs&t=npm&vr=%3E%3D6.14.2%2C%3C%3D6.15.3
+      Affected range : >=6.14.2                                                        
+                     : <=6.15.3                                                        
+      Fixed version  : 6.16.0                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N 
+    
+    ✗ MEDIUM CVE-2026-82417 [Uncaught Exception]
+      https://scout.docker.com/v/CVE-2026-82417?s=github&n=qs&t=npm&vr=%3E%3D2.2.5%2C%3C6.16.0
+      Affected range : >=2.2.5                                                         
+                     : <6.16.0                                                         
+      Fixed version  : 6.16.0                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N 
+    
+
+
+2 vulnerabilities found in 1 package
+  CRITICAL  0 
+  HIGH      0 
+  MEDIUM    2 
+  LOW       0 
+
+
+What's next:
+    View base image update recommendations → docker scout recommendations tchesco2000/flags-api:1.0.0
+

@@ -39,10 +39,12 @@ Comparação de tamanho (`docker image ls`, mesma arquitetura):
 | Imagem | linux/amd64 | linux/arm64 |
 |---|---|---|
 | `dev` (node:22-alpine + todas as deps) | 210 MB | 292 MB |
-| `production` (distroless + deps de produção, publicada) | **155 MB** | 163 MB |
+| `production` (distroless + deps de produção, publicada) | **155 MB** | 163 MB¹ |
 
 A imagem de produção fica com **~74 %** do tamanho da de dev em amd64 e bem abaixo do limite de 350 MB
 (medido com `docker pull --platform linux/amd64 tchesco2000/flags-api:1.0.0 && docker image ls`).
+
+¹ Medido em Docker 20.10; o Docker 29 reporta 227 MB para a mesma imagem arm64 (`docker image ls` mudou a forma de contar camadas compartilhadas). O critério do desafio é o tamanho em amd64.
 
 ## Decisões técnicas
 

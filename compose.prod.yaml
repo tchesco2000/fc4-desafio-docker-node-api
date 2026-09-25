@@ -1,0 +1,85 @@
+# Ambiente de PRODUCAO (consome a imagem publicada no Docker Hub)
+#   cp .env.example .env && docker compose -f compose.prod.yaml up -d
+#
+# Sem "build", sem bind mount de codigo: a imagem e a unica fonte do app.
+
+x-image: &image tchesco2000/flags-api:1.0.0
+
+services:
+  db:
+    image: postgres:17.11-alpine3.24
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:?defina DB_USER no .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+      POSTGRES_DB: ${DB_NAME:?defina DB_NAME no .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+    networks:
+      - flags-net
+
+  # Execucao unica (fora da regra de restart/limites): aplica as migracoes com
+  # o runner compilado que ja vem na imagem (dist/db/migrate.js) e encerra.
+  migrate:
+    image: *image
+    command: ["dist/db/migrate.js"]
+    env_file: .env
+    restart: "no"
+    healthcheck:
+      disable: true
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - flags-net
+
+  app:
+    image: *image
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    # O HEALTHCHECK vem da propria imagem (GET /health).
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+        reservations:
+          cpus: "0.25"
+          memory: 64M
+    # Endurecimento: sistema de arquivos somente-leitura, sem capabilities,
+    # sem escalar privilegios (a imagem ja roda como nonroot).
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - flags-net
+
+volumes:
+  pgdata:
+
+networks:
+  flags-net:
+    driver: bridge

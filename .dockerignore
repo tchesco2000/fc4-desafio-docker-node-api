@@ -1,0 +1,26 @@
+# Dependencias e build: sempre gerados dentro da imagem
+node_modules
+dist
+
+# Versionamento e segredos
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Arquivos de containerizacao / documentacao (nao entram na imagem)
+Dockerfile
+.dockerignore
+compose*.yaml
+compose*.yml
+docker-compose*.yml
+reports
+README.md
+*.md
+
+# Lixo de editor / SO
+.DS_Store
+*.log
+.vscode
+.idea
